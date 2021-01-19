@@ -84,7 +84,7 @@ class Product:
         (productId,) = self.database.fetchOne()
 
         filename = str(productId % 20 + 1) + ".jpg"
-        imageFilePath = IMAGE_PATH + "/" + filename
+        imageFilePath = DATA_PATH + "/" + filename
         with open(PRODUCT_DESCRIPTION_HTML_PATH, "r") as f, open(imageFilePath, "rb") as w:
             productDescription = f.read()            # description is clob
             productImage = w.read()                  # image_data is blob
