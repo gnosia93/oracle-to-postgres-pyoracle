@@ -9,19 +9,19 @@ temporary tablespace temp;
 
 grant connect, resource, dba to shop;
 
-drop sequence shop.seq_product_product_id;
+--drop sequence shop.seq_product_product_id;
 create sequence shop.seq_product_product_id
 start with 1
 increment by 1
 cache 20;
 
-drop sequence shop.seq_comment_comment_id;
+--drop sequence shop.seq_comment_comment_id;
 create sequence shop.seq_comment_comment_id
 start with 1
 increment by 1
 cache 20;
 
-drop sequence shop.seq_order_order_id;
+--drop sequence shop.seq_order_order_id;
 create sequence shop.seq_order_order_id
 start with 1
 increment by 1
@@ -35,7 +35,7 @@ cache 20;
 -- 각종 데이터타입 변환 정보확인
 -- display 의 경우 char, varchar로 서로 다름.
 
-drop table shop.tb_category;
+--drop table shop.tb_category;
 create table shop.tb_category
 (
    category_id       number(4) not null primary key,
@@ -43,7 +43,7 @@ create table shop.tb_category
    display_yn        varchar(1) default 'Y' not null
 );
 
-drop table shop.tb_product;
+--drop table shop.tb_product;
 create table shop.tb_product
 (
    product_id         number(9) not null,
@@ -65,8 +65,7 @@ create table shop.tb_product
 
 create index shop.idx_product_01 on shop.tb_product(category_id, product_id);
 
-
-drop table shop.tb_comment;
+--drop table shop.tb_comment;
 create table shop.tb_comment
 (
    comment_id         number not null,
@@ -83,7 +82,7 @@ create index shop.idx_comment_01 on shop.tb_comment(member_id, comment_id);
 -- order_no YYYYMMDD + serial(12자리) 어플리케이션에서 발행(프로시저로 만듬)
 -- 체크 제약조건이 제대로 변환되는지 확인한다.
 
-drop table shop.tb_order;
+--drop table shop.tb_order;
 create table shop.tb_order
 (
    order_no                varchar2(20) not null primary key,
@@ -100,7 +99,7 @@ create table shop.tb_order
 );
 
 
-drop table shop.tb_order_detail;
+--drop table shop.tb_order_detail;
 create table shop.tb_order_detail
 (
    order_no                varchar2(20) not null,
