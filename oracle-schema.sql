@@ -1,6 +1,6 @@
 -- alter session set "_ORACLE_SCRIPT"=true;                 # for oracle 12c above
 drop tablespace tbs_shop including contents;
-create tablespace tbs_shop datafile size 1G autoextend on;
+create tablespace tbs_shop datafile '/u01/app/oracle/oradata/XE/tbs_shop.dbf' size 1G autoextend on;
 
 drop user shop;
 create user shop identified by shop
