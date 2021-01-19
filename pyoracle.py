@@ -173,8 +173,8 @@ class Order:
         pass
 
 def display(step):
-    if step % 100 == 0:
-        print('*', end ='')
+    if step % 1000 == 0:
+        print('*', end ='', flush=True)
 
 
 if __name__ == '__main__':
@@ -202,7 +202,7 @@ if __name__ == '__main__':
 
         if epoch % 100 == 0:    # comment writing
             comment.newComment()
-        display(epoch)
+        display(epoch)          # flush * every 1000 order
 
     database.close()
 
