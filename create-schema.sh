@@ -1,5 +1,4 @@
 #! /bin/bash
-
 function find_replace_oracle_ip() {
   #grep $ORACLE_HOME/tnsnames.ora -e '<your-oracle-private-ip>'
   echo "find and replace oracle ip ... $1"
