@@ -49,7 +49,7 @@ create table shop.tb_product
    product_id         number(9) not null,
    category_id        number(4) not null,
    name               varchar2(100) not null,
-   price              number(19,3) not null,,
+   price              number(19,3) not null,
    description        clob,
    image_data         blob,
    thumb_image_url    varchar2(300),
@@ -83,7 +83,7 @@ create index shop.idx_comment_01 on shop.tb_comment(member_id, comment_id);
 -- order_no YYYYMMDD + serial(12자리) 어플리케이션에서 발행(프로시저로 만듬)
 -- 체크 제약조건이 제대로 변환되는지 확인한다.
 
-drop table tb_order;
+drop table shop.tb_order;
 create table shop.tb_order
 (
    order_no                varchar2(20) not null primary key,
@@ -100,7 +100,7 @@ create table shop.tb_order
 );
 
 
-drop table tb_order_detail;
+drop table shop.tb_order_detail;
 create table shop.tb_order_detail
 (
    order_no                varchar2(20) not null,
