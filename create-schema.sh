@@ -17,4 +17,4 @@ function find_raplce_oracle_ip() {
 find_raplce_oracle_ip $ORACLE_HOME/tnsnames.ora
 find_raplce_oracle_ip /home/ec2-user/pyoracle/config.ini
 
-sqlplus system/manager@xe @create-schema.sql
+sqlplus system/manager@xe @oracle-schema.sql
