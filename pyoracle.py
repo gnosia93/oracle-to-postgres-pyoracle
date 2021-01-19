@@ -1,5 +1,5 @@
 """
-    author: soonbeom@amazon.com
+    author: gnosia93@naver.com
     description :
         oracle database initialization script which includes following tables
         tb_product
