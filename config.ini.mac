@@ -1,5 +1,5 @@
 [DEFAULT]
 ORACLE_DB_URL = shop/shop@<your-oracle-private-ip>:1521/cdb1
-DATA_PATH = /home/ec2-user/pyoracle/images
-DEFAULT_PRODUCT_COUNT = 1000
+DATA_PATH = /Users/soonbeom/demo/oracle2postgres/images
+DEFAULT_PRODUCT_COUNT = 100
 DEFAULT_ORDER_COUNT = 10000000

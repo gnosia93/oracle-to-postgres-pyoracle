@@ -173,7 +173,7 @@ class Order:
         pass
 
 def display(step):
-    if step % 1000 == 0:
+    if step % 10 == 0:
         print('*', end ='', flush=True)
 
 

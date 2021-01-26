@@ -6,7 +6,7 @@ function find_replace_oracle_ip() {
   if [ $? == 0 ]; then
     echo "finding oracle ec2 private ip ...."
     PRIVATE_IP_ADDR=`aws ec2 describe-instances --region=ap-northeast-2 \
-    --filters "Name=tag:Name,Values=tf_oracle_11xe" \
+    --filters "Name=tag:Name,Values=tf_oracle_19c" \
     --query "Reservations[*].Instances[*].{PrivateIpAddress:PrivateIpAddress}" \
     --output=text`
 
@@ -17,4 +17,4 @@ function find_replace_oracle_ip() {
 find_replace_oracle_ip $ORACLE_HOME/tnsnames.ora
 find_replace_oracle_ip /home/ec2-user/pyoracle/config.ini
 
-sqlplus system/manager@xe @oracle-schema.sql
+sqlplus system/SysPassword1@cdb1 @oracle-schema.sql
