@@ -1,5 +1,6 @@
 [DEFAULT]
 ORACLE_DB_URL = shop/shop@<your-oracle-private-ip>:1521/cdb1
 DATA_PATH = /Users/soonbeom/demo/oracle2postgres/images
-DEFAULT_PRODUCT_COUNT = 100
+DEFAULT_PRODUCT_COUNT = 1000
 DEFAULT_ORDER_COUNT = 10000000
+NUMBER_OF_ORDER_CLIENT = 20

@@ -11,6 +11,7 @@ import cx_Oracle
 import datetime
 import random
 import configparser
+import threading
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -20,12 +21,14 @@ DATA_PATH = config['DEFAULT']['DATA_PATH']
 DEFAULT_PRODUCT_COUNT = int(config['DEFAULT']['DEFAULT_PRODUCT_COUNT'])
 DEFAULT_ORDER_COUNT = int(config['DEFAULT']['DEFAULT_ORDER_COUNT'])
 PRODUCT_DESCRIPTION_HTML_PATH = DATA_PATH + "/product_body.html"
+NUMBER_OF_ORDER_CLIENT = int(config['DEFAULT']['NUMBER_OF_ORDER_CLIENT'])
 
 print('ORACLE_DB_URL:', ORACLE_DB_URL)
 print('DATA_PATH"', DATA_PATH)
 print('PRODUCT_DESCRIPTION_HTML_PATH:', DATA_PATH + "/product_body.html")
 print('DEFAULT_PRODUCT_COUNT:', DEFAULT_PRODUCT_COUNT)
 print('DEFAULT_ORDER_COUNT:', DEFAULT_ORDER_COUNT)
+print('NUMBER_OF_ORDER_CLIENT:', NUMBER_OF_ORDER_CLIENT)
 
 # global variable for product id
 (minProductId, maxProductId) = (0, 0)
@@ -173,24 +176,26 @@ class Order:
         pass
 
 def display(step):
-    if step % 10 == 0:
+    if step % 100 == 0:
         print('*', end ='', flush=True)
 
-
-if __name__ == '__main__':
+def initProduct():
     database = Database()
-
     product = Product(database)
-    order = Order(database)
-    comment = Comment(database)
 
     # initialize product table
-    print("loading product table... ")
+    print("initilize product table... ")
     for epoch in range(DEFAULT_PRODUCT_COUNT):
         product.newProduct()
         display(epoch)
+    database.close()
 
-    print('')
+def makeOrder(number):
+    database = Database()
+    order = Order(database)
+    comment = Comment(database)
+    product = Product(database)
+
     # update global variables
     (minProductId, maxProductId) = product.getProductIdRange()
     print((minProductId, maxProductId))
@@ -199,13 +204,14 @@ if __name__ == '__main__':
     print("loading order & comment table...")
     for epoch in range(DEFAULT_ORDER_COUNT):
         order.newOrder()
-
         if epoch % 100 == 0:    # comment writing
             comment.newComment()
         display(epoch)          # flush * every 1000 order
 
     database.close()
 
-
-
-
+if __name__ == '__main__':
+    initProduct()
+    for i in range(1, NUMBER_OF_ORDER_CLIENT):
+        orderThread = threading.Thread(target=makeOrder, args=(i,))
+        orderThread.start()
