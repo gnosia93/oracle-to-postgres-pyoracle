@@ -109,3 +109,5 @@ create table shop.tb_order_detail
    product_cnt             number,
    primary key(order_no, product_id)
 );
+
+quit
