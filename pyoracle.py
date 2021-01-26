@@ -11,24 +11,20 @@ import cx_Oracle
 import datetime
 import random
 import configparser
-import threading
+import threading, sys
 
 config = configparser.ConfigParser()
 config.read('config.ini')
 
-ORACLE_DB_URL = config['DEFAULT']['ORACLE_DB_URL']
+ORACLE_11XE_URL = config['DEFAULT']['ORACLE_11XE_URL']
+ORACLE_19C_URL = config['DEFAULT']['ORACLE_19C_URL']
+ORACLE_DB_URL = ""
+
 DATA_PATH = config['DEFAULT']['DATA_PATH']
 DEFAULT_PRODUCT_COUNT = int(config['DEFAULT']['DEFAULT_PRODUCT_COUNT'])
 DEFAULT_ORDER_COUNT = int(config['DEFAULT']['DEFAULT_ORDER_COUNT'])
 PRODUCT_DESCRIPTION_HTML_PATH = DATA_PATH + "/product_body.html"
 NUMBER_OF_ORDER_CLIENT = int(config['DEFAULT']['NUMBER_OF_ORDER_CLIENT'])
-
-print('ORACLE_DB_URL:', ORACLE_DB_URL)
-print('DATA_PATH"', DATA_PATH)
-print('PRODUCT_DESCRIPTION_HTML_PATH:', DATA_PATH + "/product_body.html")
-print('DEFAULT_PRODUCT_COUNT:', DEFAULT_PRODUCT_COUNT)
-print('DEFAULT_ORDER_COUNT:', DEFAULT_ORDER_COUNT)
-print('NUMBER_OF_ORDER_CLIENT:', NUMBER_OF_ORDER_CLIENT)
 
 # global variable for product id
 (minProductId, maxProductId) = (0, 0)
@@ -210,8 +206,24 @@ def makeOrder(number):
 
     database.close()
 
+def verbose():
+    print('ORACLE_DB_URL:', ORACLE_DB_URL)
+    print('DATA_PATH', DATA_PATH)
+    print('PRODUCT_DESCRIPTION_HTML_PATH:', DATA_PATH + "/product_body.html")
+    print('DEFAULT_PRODUCT_COUNT:', DEFAULT_PRODUCT_COUNT)
+    print('DEFAULT_ORDER_COUNT:', DEFAULT_ORDER_COUNT)
+    print('NUMBER_OF_ORDER_CLIENT:', NUMBER_OF_ORDER_CLIENT)
+
 if __name__ == '__main__':
+    dbVersion = sys.argv[1]
+    if dbVersion == '19c':
+        ORACLE_DB_URL = ORACLE_19C_URL
+    else :
+        ORACLE_DB_URL = ORACLE_11XE_URL
+    verbose()
     initProduct()
     for i in range(1, NUMBER_OF_ORDER_CLIENT):
         orderThread = threading.Thread(target=makeOrder, args=(i,))
         orderThread.start()
+
+
