@@ -18,4 +18,4 @@ cp config.ini.ec2 config.ini
 find_replace_oracle_ip $ORACLE_HOME/tnsnames.ora
 find_replace_oracle_ip /home/ec2-user/pyoracle/config.ini
 
-sqlplus system/SysPassword1@cdb1 @oracle-schema.sql
+sqlplus system/manager@cdb1 @oracle-schema.sql
