@@ -1,3 +1,4 @@
+alter session set container=PDB1;
 alter session set "_ORACLE_SCRIPT"=true;
 drop tablespace tbs_shop including contents and datafiles;
 --create tablespace tbs_shop datafile '/u01/app/oracle/oradata/XE/tbs_shop.dbf' size 1G autoextend on;
