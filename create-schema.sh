@@ -19,7 +19,7 @@ find_replace_oracle_ip $ORACLE_HOME/tnsnames.ora "<11xe-oracle-private-ip>" tf_o
 find_replace_oracle_ip $ORACLE_HOME/tnsnames.ora "<19c-oracle-private-ip>" tf_oracle_19c
 
 sqlplus system/manager@xe @oracle-schema-11xe.sql
-sqlplus system/manager@pdb1 @oracle-schema-19c.sql
+sqlplus system/manager@pdb1 as sysdba @oracle-schema-19c.sql
 
 cp config.ini.ec2 config.ini
 find_replace_oracle_ip /home/ec2-user/pyoracle/config.ini "<11xe-oracle-private-ip>" tf_oracle_11xe
