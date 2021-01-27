@@ -141,6 +141,7 @@ class Order:
 
     def newOrder(self):
         orderNo = self.getOrderNo()
+
         # 세부 항목 부터 입력.
         for i in range(self.getRandomOrderDetailCount()):
             try:
