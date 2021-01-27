@@ -26,8 +26,8 @@ cache 20;
 create sequence shop.seq_order_order_id
 start with 1
 increment by 1
-maxvalue 10000000
-cycle
+nomaxvalue
+nocycle
 cache 20;
 
 
