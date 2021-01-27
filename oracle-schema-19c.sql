@@ -9,7 +9,7 @@ create user shop identified by shop
 default tablespace tbs_shop
 temporary tablespace temp;
 
-grant connect, resource, dba to shop;
+grant connect, resource, dba, create session to shop;
 
 --drop sequence shop.seq_product_product_id;
 create sequence shop.seq_product_product_id
