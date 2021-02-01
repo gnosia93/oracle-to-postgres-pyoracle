@@ -111,4 +111,17 @@ create table shop.tb_order_detail
    primary key(order_no, product_id)
 );
 
+
+-- added 2021/02/01
+create or replace view view_recent_order_30 as
+select name, order_no, member_id, order_price, order_ymdt
+from (
+    select rownum as rn, p.name, o.order_no, o.member_id, o.order_price, o.order_ymdt
+    from shop.tb_order o, shop.tb_order_detail d, shop.tb_product p
+    where o.order_no = d.order_no
+      and d.product_id = p.product_id
+    order by o.order_ymdt desc
+)
+where rn between 1 and 30;
+
 quit
