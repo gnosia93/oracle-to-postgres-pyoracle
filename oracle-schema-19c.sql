@@ -112,6 +112,23 @@ create table shop.tb_order_detail
 );
 
 
+--drop table shop.tb_product_summary;
+create table shop.tb_product_summary
+(
+   year           varchar2(4) not null,
+   month          varchar2(2) not null,
+   day            varchar2(2) not null,
+   hour           varchar2(2) not null,
+   min            varchar2(2) not null,
+   product_id     number(9) not null,
+   order_cnt      number not null,
+   total_price    number not null,
+   comment_cnt    number not null,
+   primary key(year, month, day, hour, min, product_id)
+);
+
+
+
 -- added 2021/02/01
 -- view
 create or replace view shop.view_recent_order_30 as
@@ -126,7 +143,7 @@ from (
 where rn between 1 and 30;
 
 -- function
-DROP FUNCTION shop.get_product_id;
+-- DROP FUNCTION shop.get_product_id;
 CREATE OR REPLACE FUNCTION shop.get_product_id
 RETURN VARCHAR2
 IS
@@ -142,21 +159,7 @@ END;
 /
 
 -- procedure
-drop table shop.tb_product_summary;
-create table shop.tb_product_summary
-(
-   year           varchar2(4) not null,
-   month          varchar2(2) not null,
-   day            varchar2(2) not null,
-   hour           varchar2(2) not null,
-   min            varchar2(2) not null,
-   product_id     number(9) not null,
-   order_cnt      number not null,
-   total_price    number not null,
-   comment_cnt    number not null,
-   primary key(year, month, day, hour, min, product_id)
-);
-
+-- outer join example
 CREATE OR REPLACE PROCEDURE shop.sp_product_summary(v_interval in number)
 IS
     v_cnt NUMBER := 0;
@@ -195,6 +198,55 @@ BEGIN
 END;
 /
 
+-- this code doesn't work so don't execute this.
+-- loop example
+-- DROP PROCEDURE SHOP.LOAD_DATA;
+CREATE OR REPLACE PROCEDURE SHOP.LOAD_DATA(rowcnt IN NUMBER)
+IS
+    v_cnt NUMBER := 0;
+    v_price NUMBER := 0;
+    v_delivery_cd NUMBER := 0;
+    v_delivery_type VARCHAR2(10);
+    v_image_url VARCHAR2(300);
+    v_random int;
+BEGIN
 
+    LOOP
+        v_cnt := v_cnt + 1;
+
+        BEGIN
+            v_price := (MOD(v_cnt, 10) + 1) * 1000;
+            select round(dbms_random.value(1,10)) into v_random from dual;
+
+            IF v_random = 1 THEN
+                v_delivery_type := 'Free';
+            ELSE
+                v_delivery_type := 'Charged';
+            END IF;
+
+            v_image_url := 'https://ocktank-prod-image.s3.ap-northeast-2.amazonaws.com/jeans/jean-' || v_random || '.png';
+
+            INSERT INTO SHOP.TB_PRODUCT(product_id, name, price, description, delivery_type, image_url)
+                VALUES(SHOP.seq_product_product_id.nextval,
+                      'ocktank 청바지' || SHOP.seq_product_product_id.currval,
+                      v_price,
+                      '청바지 전문!!!',
+                      v_delivery_type,
+                      v_image_url);
+        EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Exception ..');
+        END;
+
+        IF MOD(v_cnt, 1000) = 0 THEN
+            COMMIT;
+        END IF;
+
+        EXIT WHEN v_cnt >= rowcnt;
+
+    END LOOP;
+    COMMIT;
+END;
+/
 
 quit
