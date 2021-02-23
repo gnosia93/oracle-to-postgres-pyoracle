@@ -55,10 +55,8 @@ class Database:
     def close(self):
         self.conn.close()
 
-
-
 def getOrderMember():
-    return 'user' + str(random.randint(1, 100)).zfill(3)
+    return 'user' + str(random.randint(1, 10000)).zfill(3)
 
 def getRandomCatogoryId():
     return random.randint(1, 20)
