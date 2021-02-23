@@ -11,7 +11,7 @@ import cx_Oracle
 import datetime
 import random
 import configparser
-import threading, sys
+import threading,sys
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -64,6 +64,7 @@ def getRandomCatogoryId():
     return random.randint(1, 20)
 
 def getRandomProductId():
+    global minProductId, maxProductId
     return random.randint(minProductId, maxProductId)
 
 def getRandomCommentScore():
@@ -194,6 +195,7 @@ def makeOrder(number):
     product = Product(database)
 
     # update global variables
+    global minProductId, maxProductId
     (minProductId, maxProductId) = product.getProductIdRange()
     print((minProductId, maxProductId))
 
@@ -216,11 +218,14 @@ def verbose():
     print('NUMBER_OF_ORDER_CLIENT:', NUMBER_OF_ORDER_CLIENT)
 
 if __name__ == '__main__':
-    dbVersion = sys.argv[1]
-    if dbVersion == '19c':
+
+    if len(sys.argv) > 1:
+        dbVersion = sys.argv[1]
+        if dbVersion == '11xe':
+            ORACLE_DB_URL = ORACLE_11XE_URL
+    else:
         ORACLE_DB_URL = ORACLE_19C_URL
-    else :
-        ORACLE_DB_URL = ORACLE_11XE_URL
+
     verbose()
     initProduct()
     for i in range(1, NUMBER_OF_ORDER_CLIENT):

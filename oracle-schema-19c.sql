@@ -11,19 +11,19 @@ temporary tablespace temp;
 
 grant create session, resource, dba  to shop;
 
-drop sequence shop.seq_product_product_id;
+--drop sequence shop.seq_product_product_id;
 create sequence shop.seq_product_product_id
 start with 1
 increment by 1
 cache 20;
 
-drop sequence shop.seq_comment_comment_id;
+--drop sequence shop.seq_comment_comment_id;
 create sequence shop.seq_comment_comment_id
 start with 1
 increment by 1
 cache 20;
 
-drop sequence shop.seq_order_order_id;
+--drop sequence shop.seq_order_order_id;
 create sequence shop.seq_order_order_id
 start with 1
 increment by 1
@@ -37,7 +37,7 @@ cache 20;
 -- 각종 데이터타입 변환 정보확인
 -- display 의 경우 char, varchar로 서로 다름.
 
-drop table shop.tb_category;
+--drop table shop.tb_category;
 create table shop.tb_category
 (
    category_id       number(4) not null primary key,
@@ -45,7 +45,7 @@ create table shop.tb_category
    display_yn        varchar(1) default 'Y' not null
 );
 
-drop table shop.tb_product;
+--drop table shop.tb_product;
 create table shop.tb_product
 (
    product_id         number(9) not null,
@@ -67,7 +67,7 @@ create table shop.tb_product
 
 create index shop.idx_product_01 on shop.tb_product(category_id, product_id);
 
-drop table shop.tb_comment;
+--drop table shop.tb_comment;
 create table shop.tb_comment
 (
    comment_id         number not null,
@@ -84,7 +84,7 @@ create index shop.idx_comment_01 on shop.tb_comment(member_id, comment_id);
 -- order_no YYYYMMDD + serial(12자리) 어플리케이션에서 발행(프로시저로 만듬)
 -- 체크 제약조건이 제대로 변환되는지 확인한다.
 
-drop table shop.tb_order;
+--drop table shop.tb_order;
 create table shop.tb_order
 (
    order_no                varchar2(20) not null primary key,
@@ -101,7 +101,7 @@ create table shop.tb_order
 );
 
 
-drop table shop.tb_order_detail;
+--drop table shop.tb_order_detail;
 create table shop.tb_order_detail
 (
    order_no                varchar2(20) not null,
@@ -112,7 +112,7 @@ create table shop.tb_order_detail
 );
 
 
-drop table shop.tb_product_summary;
+--drop table shop.tb_product_summary;
 create table shop.tb_product_summary
 (
    year           varchar2(4) not null,
@@ -128,7 +128,7 @@ create table shop.tb_product_summary
 );
 
 
-drop table shop.tb_sct_typeconv;
+--drop table shop.tb_sct_typeconv;
 create table shop.tb_sct_typeconv
 (
    num              number,
@@ -161,7 +161,7 @@ create table shop.tb_sct_typeconv
    bfile_col        bfile
 );
 
-drop table shop.tb_order_summary;
+--drop table shop.tb_order_summary;
 create table shop.tb_order_summary
 (
     order_no        varchar2(20) not null unique,
@@ -172,20 +172,25 @@ create table shop.tb_order_summary
 
 -- added 2021/02/01
 -- trigger
-create or replace trigger tr_after_insert_order
+create or replace trigger shop.tr_after_insert_order
 after insert on shop.tb_order
 for each row
 declare
     v_product_cnt   number;
+    v_order_no      tb_order.order_no%type;
 begin
-    dbms_output.put_line('hello');
-    select count(1) into v_product_cnt
-    from shop.tb_order o, shop.tb_order_detail d
-    where o.order_no = d.order_no
-      and o.order_no = :new.order_no;
+    dbms_output.put_line('tr_after_insert_order executed...');
 
-    insert into shop.tb_order_summary(order_no, product_cnt, reg_ymdt) values(:NEW.order_no, v_product_cnt, sysdate);
+  --  v_order_no :=
 
+  --  select count(1) into v_product_cnt
+  --  from shop.tb_order o, shop.tb_order_detail d
+  --  where o.order_no = d.order_no
+  --    and o.order_no = :new.order_no;
+
+
+    -- 실행시 권한 오류로 인해 임시적으로 주서처리 함. 원인은 알수 없음 ㅜㅜ
+    --insert into shop.tb_order_summary values(:NEW.order_no, v_product_cnt, sysdate);
 end;
 /
 
