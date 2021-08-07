@@ -221,8 +221,8 @@ if __name__ == '__main__':
         dbVersion = sys.argv[1]
         if dbVersion == '11xe':
             ORACLE_DB_URL = ORACLE_11XE_URL
-    else:
-        ORACLE_DB_URL = ORACLE_19C_URL
+        else:
+            ORACLE_DB_URL = ORACLE_19C_URL
 
     verbose()
     initProduct()
